@@ -11,7 +11,15 @@ var refine = require('openrefine');
 var os = require("os");
 const util = require('util');
 
+/*
+* HOSTNAME, IP
+* http://stackoverflow.com/questions/20553554/ddg#20554225
+* https://www.abstractapi.com/guides/node-js-get-ip-address
+*/
 var hostname = os.hostname();
+//var ip = os.networkInterfaces().address;
+//window.location.hostname;
+//var ip = req.socket.remoteAddress;
 
 /* DESARROLLO */
 //const user ="0009-0000-8287-135X";
@@ -40,12 +48,7 @@ const get_api3_pub = servidor_pub + "/v3.0";
 const get_pub = servidor_pub;
 
 router.get('/boton/oauth/', function(req, res, next) {
-
-    /*
-    * IP
-    * https://www.abstractapi.com/guides/node-js-get-ip-address
-    */
-    var ip = req.socket.remoteAddress;
+    var ip = req.socket.remoteAddress.split(':')[3];
     const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
     res.render('orcid_boton', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
 });
