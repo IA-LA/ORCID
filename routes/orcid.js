@@ -19,7 +19,7 @@ const util = require('util');
 var hostname = os.hostname();
 //var ip = os.networkInterfaces().address;
 //window.location.hostname;
-//var ip = req.socket.remoteAddress;
+//var ip = req.socket.remoteAddress.split(':')[3];
 
 /* DESARROLLO */
 //const user ="0009-0000-8287-135X";
@@ -48,7 +48,7 @@ const get_api3_pub = servidor_pub + "/v3.0";
 const get_pub = servidor_pub;
 
 router.get('/boton/oauth/', function(req, res, next) {
-    var ip = req.socket.remoteAddress.split(':')[3];
+    ip = "10.201.54.31";
     const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
     res.render('orcid_boton', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
 });
