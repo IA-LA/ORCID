@@ -8,7 +8,10 @@ var http = require('http');
 //var nlp = require('node-nlp');
 var natural_nlp = require('natural');
 var refine = require('openrefine');
+var os = require("os");
 const util = require('util');
+
+var hostname = os.hostname();
 
 /* DESARROLLO */
 //const user ="0009-0000-8287-135X";
@@ -28,7 +31,7 @@ const access_token = "9a2eb79b-a278-4702-ba25-b86054c72dc3";
 
 /* GET users listing. */
 /*OAuth*/
-const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=" + window.location.hostname + ":3000/orcid/redir/";
+const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=" + hostname + ":3000/orcid/redir/";
 //const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=https://ailanto-dev.intecca.uned.es";
 //const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=http://ailanto-dev.intecca.uned.es:9002";
 const post_oauth_code_token = servidor + "/oauth/token?client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=authorization_code&code=";
