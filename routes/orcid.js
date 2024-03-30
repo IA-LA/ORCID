@@ -45,8 +45,8 @@ router.get('/boton/oauth/', function(req, res, next) {
     * IP
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
-    var ip = req.ip;
-    const get_oauth_code_redir = get_oauth_code + 'http://' + ip.split(':')[3] + ":3000/orcid/redir/";
+    var ip = req.socket.remoteAddress;
+    const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
     res.render('orcid_boton', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
 });
 
