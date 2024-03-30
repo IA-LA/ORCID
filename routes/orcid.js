@@ -48,7 +48,15 @@ const get_api3_pub = servidor_pub + "/v3.0";
 const get_pub = servidor_pub;
 
 router.get('/boton/oauth/', function(req, res, next) {
-    ip = "10.201.54.31";
+    /*
+    * HOSTNAME, IP
+    * http://stackoverflow.com/questions/20553554/ddg#20554225
+    * https://www.abstractapi.com/guides/node-js-get-ip-address
+    */
+    var ip = req.socket.remoteAddress.split(':')[3];
+    if(ip.indexOf('10.201.54'))
+        ip='10.201.54.31';
+
     const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
     res.render('orcid_boton', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
 });
@@ -144,11 +152,21 @@ router.post('/', function(req, res, next) {
     res.send(util.inspect(req.url));
 });
 
-/*OpenID*/
-/*Impkicit OAuth*/
-const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
-
 router.get('/boton/openid/', function(req, res, next) {
+    /*
+    * HOSTNAME, IP
+    * http://stackoverflow.com/questions/20553554/ddg#20554225
+    * https://www.abstractapi.com/guides/node-js-get-ip-address
+    */
+    var ip = req.socket.remoteAddress.split(':')[3];
+    if(ip.indexOf('10.201.54') != -1)
+        ip = '10.201.54.31';
+
+    /*OpenID*/
+    /*Impkicit OAuth*/
+    //const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
+    const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
+
     res.render('orcid_boton', { title: 'ORCID OpenID', subtitle: servidor, message: 'Aprieta el botón!', url: get_openid_token });
 });
 
