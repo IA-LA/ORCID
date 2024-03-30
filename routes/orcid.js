@@ -28,7 +28,7 @@ const access_token = "9a2eb79b-a278-4702-ba25-b86054c72dc3";
 
 /* GET users listing. */
 /*OAuth*/
-const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=http://127.0.0.1:3000/orcid/redir/";
+const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=" + window.location.hostname + ":3000/orcid/redir/";
 //const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=https://ailanto-dev.intecca.uned.es";
 //const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=http://ailanto-dev.intecca.uned.es:9002";
 const post_oauth_code_token = servidor + "/oauth/token?client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=authorization_code&code=";
@@ -117,7 +117,7 @@ router.get('/redir/', function(req, res, next) {
                 var email = JSON.parse(body);
                 res.render('orcid_boton', {
                     title: 'ORCID OAuth 2',
-                    subtitle: ' Code: ' + req.query.code + ' & Cookies: ' + util.inspect(cookies) + ' & Access_token: ' + access_token['access_token'] + ' & ORCID userinfo: ' + userinfo['sub'] + ' & ORCID emails: ' + (email['email'].length > 0 ? (email['email'].length > 1 ? (email['email'].length > 2 ? email['email'][0]['email'] + " " + email['email'][1]['email'] + " " + email['email'][2]['email'] : email['email'][0]['email'] + " " + email['email'][1]['email']) : email['email'][0]['email']) : "No email"),
+                    subtitle: ' Code: ' + req.query.code + ' & Cookies: ' + util.inspect(cookies) + ' & Access_token: ' + access_token['access_token'] + ' & ORCID userinfo : ' + userinfo['sub'] + ' & ORCID emails: ' + (email['email'].length > 0 ? (email['email'].length > 1 ? (email['email'].length > 2 ? email['email'][0]['email'] + " " + email['email'][1]['email'] + " " + email['email'][2]['email'] : email['email'][0]['email'] + " " + email['email'][1]['email']) : email['email'][0]['email']) : "No email"),
                     message: util.inspect(response),
                     url: ""
                 });
