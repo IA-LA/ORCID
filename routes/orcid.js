@@ -54,7 +54,7 @@ router.get('/boton/oauth/', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54'))
+    if(ip.indexOf('10.201.54.') >= 0)
         ip='10.201.54.31';
 
     const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
@@ -159,7 +159,7 @@ router.get('/boton/openid/', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54') != -1)
+    if(ip.indexOf('10.201.54.') >= 0)
         ip = '10.201.54.31';
 
     /*OpenID*/
