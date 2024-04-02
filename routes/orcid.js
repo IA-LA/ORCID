@@ -141,7 +141,7 @@ router.get('/redir/', function(req, res, next) {
                     title: 'ORCID OAuth 2',
                     subtitle: ' Code: ' + req.query.code + ' & Cookies: ' + util.inspect(cookies) + ' & Access_token: ' + access_token['access_token'] + ' & ORCID userinfo : ' + userinfo['sub'] + ' & ORCID emails: ' + (email['email'].length > 0 ? (email['email'].length > 1 ? (email['email'].length > 2 ? email['email'][0]['email'] + " " + email['email'][1]['email'] + " " + email['email'][2]['email'] : email['email'][0]['email'] + " " + email['email'][1]['email']) : email['email'][0]['email']) : "No email"),
                     message: util.inspect(response),
-                    url: "https://ailanto-dev.intecca.uned.es//"
+                    url: "https://ailanto-dev.intecca.uned.es/index_orcid.html"
                 });
             });
         });
