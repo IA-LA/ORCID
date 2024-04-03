@@ -23,17 +23,17 @@ var hostname = os.hostname();
 
 /* DESARROLLO */
 //const user ="0009-0000-8287-135X";
-const client_id /* ID de cliente */ = "APP-4JCIPZXOXYNS6WV1";
-const client_secret /* Código secreto del cliente */ = "124e8a7f-fdd4-4a8f-8b78-6ec7e17b75b9";
-const servidor = "https://sandbox.orcid.org";
-const servidor_pub = "https://pub.sandbox.orcid.org";
+//const client_id /* ID de cliente */ = "APP-4JCIPZXOXYNS6WV1";
+//const client_secret /* Código secreto del cliente */ = "124e8a7f-fdd4-4a8f-8b78-6ec7e17b75b9";
+//const servidor = "https://sandbox.orcid.org";
+//const servidor_pub = "https://pub.sandbox.orcid.org";
 
 /* PRODUCCION */
-//const user ="0009-0004-3741-8715";
-//const client_id /* ID de cliente */ = "APP-GEKGUEO143RB1XGL";
-//const client_secret /* Código secreto del cliente */ = "0985ab59-a02e-4ec2-ab41-961aa1668543";
-//const servidor = "https://orcid.org";
-//const servidor_pub = "https://pub.orcid.org";
+const user ="0009-0004-3741-8715";
+const client_id /* ID de cliente */ = "APP-GEKGUEO143RB1XGL";
+const client_secret /* Código secreto del cliente */ = "0985ab59-a02e-4ec2-ab41-961aa1668543";
+const servidor = "https://orcid.org";
+const servidor_pub = "https://pub.orcid.org";
 
 const access_token = "9a2eb79b-a278-4702-ba25-b86054c72dc3";
 
