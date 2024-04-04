@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  p
+    input(type="button", value="email", specialID="someSpecialID", onclick="ir('#{url}'};")
+  script console.log("Sí #{message}"); function ir(url) {  window.location = url  };
