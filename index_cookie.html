@@ -2,10 +2,10 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <title>Servidor ORCID UNED</title>
+        <title>Servidor Cookie</title>
     </head>
     <body>
-        <h1>Servidor ORCID UNED</h1>
+        <h1>Servidor Cookie</h1>
 
         <h2>Cookie</h2>
 
@@ -35,7 +35,7 @@
                 for (let x in myObj) {
                     email = myObj[x];
                 }
-                let text = "<h3>usuarioUNEDv2: </h3>" + getCook('usuarioUNEDv2');
+                let text = "<h3>usuarioUNEDv2: </h3>" + (usuario===""?"Cookie no disponible":usuario);
                 text += "<h3>email: </h3>" + email;
 
                 // POST 2 (EMAIL-USER INFO)
@@ -45,8 +45,8 @@
                 const xmlhttp = new XMLHttpRequest();
                 xmlhttp.onload = function() {
                     const myObj = JSON.parse(this.responseText);
-                    let DNI = "Vacío";
-                    text += "<h3>Datos:</h3> <select>";
+                    let DNI = "00000000-O";
+                    text += "<h3>Usuario:</h3> <select>";
                     for (let x in myObj) {
                         text += "<option>" + x + ": " + myObj[x] + "</option>";
                         if(x === 'Nif')
@@ -61,7 +61,7 @@
                     const xmlhttp = new XMLHttpRequest();
                     xmlhttp.onload = function() {
                         const myObj = JSON.parse(this.responseText);
-                        text += "<h3>Datos:</h3> <select>";
+                        text += "<h3>Nif:</h3> <select>";
                         for (let x in myObj) {
                             text += "<option>" + x + ": " + myObj[x] + "</option>";
                         }
