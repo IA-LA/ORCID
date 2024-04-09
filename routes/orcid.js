@@ -39,7 +39,12 @@ const access_token = "9a2eb79b-a278-4702-ba25-b86054c72dc3";
 
 /* GET users listing. */
 /*OAuth*/
-const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=";
+const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&show_login=true&lang=es&state=parametroPersonalizable&redirect_uri=";
+const get_oauth_code_prefill = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&show_login=false&family_names=Apellidos&given_names=Nombre&email=correo%40uned.es&lang=es&state=parametroPersonalizable&redirect_uri=";
+const get_oauth_code_force_sign = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&show_login=true&prompt=login&lang=es&state=parametroPersonalizable&redirect_uri=";
+//const get_oauth_code_institutional = servidor + "/institutional-signin?client_id=" + client_id + "&response_type=code&scope=/authenticate&family_names=Apellidos&given_names=Nombre&email=correo%40uned.es&lang=es&redirect_uri=";
+const servidor_login = servidor + "/signin";
+const servidor_institutional_login = servidor + "/institutional-signin";
 //const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=https://ailanto-dev.intecca.uned.es";
 //const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri=http://ailanto-dev.intecca.uned.es:9002";
 const post_oauth_code_token = servidor + "/oauth/token?client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=authorization_code&code=";
@@ -57,8 +62,34 @@ router.get('/boton/oauth/', function(req, res, next) {
     if(ip.indexOf('10.201.54.') >= 0)
         ip='10.201.54.31';
 
+    /*OAuth*/
     const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
     res.render('orcid_boton', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
+});
+
+router.get('/botones/oauth/', function(req, res, next) {
+    /*
+    * HOSTNAME, IP
+    * http://stackoverflow.com/questions/20553554/ddg#20554225
+    * https://www.abstractapi.com/guides/node-js-get-ip-address
+    */
+    var ip = req.socket.remoteAddress.split(':')[3];
+    if(ip.indexOf('10.201.54.') >= 0)
+        ip='10.201.54.31';
+
+    /*OAuth*/
+    const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
+    const get_oauth_code_redir_prefill = get_oauth_code_prefill + 'http://' + ip + ":3000/orcid/redir/";
+    const get_oauth_code_redir_force_sign = get_oauth_code_force_sign + 'http://' + ip + ":3000/orcid/redir/";
+    const servidor_login_redir = servidor_login + '?redirect_uri=http://' + ip + ":3000/orcid/redir/";
+    const servidor_institutional_login_redir = servidor_institutional_login + '?redir=http://' + ip + ":3000/orcid/redir/";
+
+    /*OpenID*/
+    /*Impkicit OAuth*/
+    //const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
+    const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
+
+    res.render('orcid_botones', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta un botón!', url0: servidor_login_redir, url1: servidor_institutional_login_redir, url2: get_oauth_code_redir, url3: get_oauth_code_redir_prefill, url4: get_oauth_code_redir_force_sign, url5: get_openid_token});
 });
 
 router.get('/redir/', function(req, res, next) {
