@@ -74,7 +74,7 @@ router.get('/menu/', function(req, res, next) {
     //const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
     const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
 
-    res.render('orcid_botones', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta un botón!', url0: servidor_login_redir, url1: servidor_institutional_login_redir, url2: get_oauth_code_redir, url3: get_oauth_code_redir_prefill, url4: get_oauth_code_redir_force_sign, url5: get_openid_token});
+    res.render('orcid_botones', { title: 'ORCID Menú', subtitle: servidor, message: 'Aprieta un botón!', url0: servidor_login_redir, url1: servidor_institutional_login_redir, url2: get_oauth_code_redir, url3: get_oauth_code_redir_prefill, url4: get_oauth_code_redir_force_sign, url5: get_openid_token});
 });
 
 router.get('/boton/oauth/', function(req, res, next) {
