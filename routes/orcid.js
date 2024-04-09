@@ -52,22 +52,7 @@ const get_oauth_userinfo = servidor + "/oauth/userinfo";
 const get_api3_pub = servidor_pub + "/v3.0";
 const get_pub = servidor_pub;
 
-router.get('/boton/oauth/', function(req, res, next) {
-    /*
-    * HOSTNAME, IP
-    * http://stackoverflow.com/questions/20553554/ddg#20554225
-    * https://www.abstractapi.com/guides/node-js-get-ip-address
-    */
-    var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54.') >= 0)
-        ip='10.201.54.31';
-
-    /*OAuth*/
-    const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
-    res.render('orcid_boton', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
-});
-
-router.get('/botones/oauth/', function(req, res, next) {
+router.get('/menu/', function(req, res, next) {
     /*
     * HOSTNAME, IP
     * http://stackoverflow.com/questions/20553554/ddg#20554225
@@ -90,6 +75,21 @@ router.get('/botones/oauth/', function(req, res, next) {
     const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
 
     res.render('orcid_botones', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta un botón!', url0: servidor_login_redir, url1: servidor_institutional_login_redir, url2: get_oauth_code_redir, url3: get_oauth_code_redir_prefill, url4: get_oauth_code_redir_force_sign, url5: get_openid_token});
+});
+
+router.get('/boton/oauth/', function(req, res, next) {
+    /*
+    * HOSTNAME, IP
+    * http://stackoverflow.com/questions/20553554/ddg#20554225
+    * https://www.abstractapi.com/guides/node-js-get-ip-address
+    */
+    var ip = req.socket.remoteAddress.split(':')[3];
+    if(ip.indexOf('10.201.54.') >= 0)
+        ip='10.201.54.31';
+
+    /*OAuth*/
+    const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
+    res.render('orcid_boton', { title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
 });
 
 router.get('/redir/', function(req, res, next) {
