@@ -1,6 +1,8 @@
 extends layout
 block content
-  // Fuente: https://webdesign.tutsplus.com/baking-bootstrap-snippets-with-jade--cms-22798t
+  // Fuente:
+  //            https://webdesign.tutsplus.com/baking-bootstrap-snippets-with-jade--cms-22798t
+  //            https://www.bootstrapcdn.com
   script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
   script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
   nav.navbar.navbar-default( role="navigation" )
@@ -19,16 +21,17 @@ block content
                     span.caret
                 ul.dropdown-menu( role="menu" )
                     li.dropdown-header Login
-                    li: a( href="#{url0}" ) Solo
+                    li: a( href="#{url}" ) Sign-in
+                    li: a( href="#{url0}" ) Sign-out
                     li: a( href='#{url1}' ) Institutional
             li.dropdown
                 a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) OAuth
                     span.caret
                 ul.dropdown-menu( role="menu" )
                     li.dropdown-header OAuth
-                    li: a( href='#{url2}' ) ORCID login
-                    li: a( href='#{url3}' ) ORCID register
-                    li: a( href='#{url4}' ) ORCID sign-out
+                    li: a( href='#{url2}' ) ORCID access
+                    li: a( href='#{url3}' ) ORCID access register
+                    li: a( href='#{url4}' ) ORCID access sign-out
             li.dropdown
                 a.dropdown-toggle( href="#{url5}", data-toggle="dropdown", role="button", aria-expanded="false" ) OpenID
                     span.caret
