@@ -20,24 +20,32 @@ block content
                 a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Login
                     span.caret
                 ul.dropdown-menu( role="menu" )
-                    li.dropdown-header Login
+                    li.dropdown-header Login ORCID
                     li: a( href="#{url}" ) Sign-in
                     li: a( href="#{url0}" ) Sign-out
                     li: a( href='#{url1}' ) Institutional
+                    li.dropdown-header Login SSO
+                    li: a( href="#{url2}" ) UNED
+                    li: a( href="#{url3}" ) UNED redir (Local)
+                    li: a( href="#{url4}" ) UNED redir (UNED)
+                    li: a( href="#{url5}" ) UNED redir (ORCID)
+                    li: a( href="#{url2}" ) UNED
+                    li: a( href="#{url2}" ) UNED
+                    li: a( href="#{url2}" ) UNED
             li.dropdown
                 a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) OAuth
                     span.caret
                 ul.dropdown-menu( role="menu" )
                     li.dropdown-header OAuth
-                    li: a( href='#{url2}' ) ORCID access
-                    li: a( href='#{url3}' ) ORCID access register
-                    li: a( href='#{url4}' ) ORCID access sign-out
+                    li: a( href='#{url01}' ) ORCID access
+                    li: a( href='#{url02}' ) ORCID access register
+                    li: a( href='#{url03}' ) ORCID access sign-out
             li.dropdown
-                a.dropdown-toggle( href="#{url5}", data-toggle="dropdown", role="button", aria-expanded="false" ) OpenID
+                a.dropdown-toggle( href="#{url10}", data-toggle="dropdown", role="button", aria-expanded="false" ) OpenID
                     span.caret
                 ul.dropdown-menu( role="menu" )
                     li.dropdown-header Openid
-                    li: a( href="#{url5}" ) ORCID OpenID
+                    li: a( href="#{url0}" ) ORCID OpenID
   h1= title
   h2 Utilizando la URL: #{subtitle}
   p
