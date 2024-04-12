@@ -85,7 +85,7 @@ router.get('/menu/', function(req, res, next) {
     //const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
     const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2Fmenu%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
 
-    res.render('orcid_menu', { theme: 'flatly', title: 'ORCID Menú', subtitle: servidor, message: 'Aprieta un botón!', url: servidor_login_redir, url0: servidor_logout, url1: servidor_institutional_login_redir, url2: servidor_uned_sso, url3: servidor_uned_sso_redir1, url4: servidor_uned_sso_redir2, url5: servidor_uned_sso_redir3, url01: get_oauth_code_redir, url02: get_oauth_code_redir_register, url03: get_oauth_code_redir_signout, url10: get_openid_token});
+    res.render('orcid_menu', { theme: (req.query.theme===undefined ? 'flatly' : req.query.theme), title: 'ORCID Menú', subtitle: servidor, message: 'Aprieta un botón!', url: servidor_login_redir, url0: servidor_logout, url1: servidor_institutional_login_redir, url2: servidor_uned_sso, url3: servidor_uned_sso_redir1, url4: servidor_uned_sso_redir2, url5: servidor_uned_sso_redir3, url01: get_oauth_code_redir, url02: get_oauth_code_redir_register, url03: get_oauth_code_redir_signout, url10: get_openid_token});
 });
 
 router.get('/boton/oauth/', function(req, res, next) {
@@ -100,7 +100,7 @@ router.get('/boton/oauth/', function(req, res, next) {
 
     /*OAuth*/
     const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
-    res.render('orcid_boton', { theme: 'darkly', title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
+    res.render('orcid_boton', { theme: req.query.theme, title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
 });
 
 router.get('/redir/', function(req, res, next) {
