@@ -1,0 +1,127 @@
+extends layout
+block content
+  // Fuente:
+  //            https://webdesign.tutsplus.com/baking-bootstrap-snippets-with-jade--cms-22798t
+  //            https://www.bootstrapcdn.com
+  script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
+  script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
+  nav.navbar.navbar-default( role="navigation" )
+    .navbar-header
+        button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#navbar-inverse", aria-expanded="false", aria-controls="navbar")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        a.navbar-brand(href="#{subtitle}") ORCID
+    #navbar-inverse.collapse.navbar-collapse
+        ul.nav.navbar-nav
+            li.active: a( href="#") Home
+            li.dropdown
+                a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Login
+                    span.caret
+                ul.dropdown-menu( role="menu" )
+                    li.dropdown-header Login ORCID
+                    li: a( href="#{url}" ) Sign-in
+                    li: a( href="#{url0}" ) Sign-out
+                    li: a( href='#{url1}' ) Institutional
+                    li.dropdown-header Login SSO
+                    li: a( href="#{url2}" ) Institutional (UNED)
+                    li: a( href="#{url3}" ) UNED redir (Local)
+                    li: a( href="#{url4}" ) UNED redir (UNED)
+                    li: a( href="#{url5}" ) UNED redir (ORCID)
+            li.dropdown
+                a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) OAuth
+                    span.caret
+                ul.dropdown-menu( role="menu" )
+                    li.dropdown-header OAuth
+                    li: a( href='#{url01}' ) ORCID access
+                    li: a( href='#{url02}' ) ORCID access register
+                    li: a( href='#{url03}' ) ORCID access sign-out
+                    li.dropdown-header OAuth Botón
+                    li: a( href="../boton/oauth" ) Botón
+            li.dropdown
+                a.dropdown-toggle( href="#{url10}", data-toggle="dropdown", role="button", aria-expanded="false" ) OpenID
+                    span.caret
+                ul.dropdown-menu( role="menu" )
+                    li.dropdown-header Openid
+                    li: a( href="#{url0}" ) ORCID OpenID
+                    li.dropdown-header Openid Botón
+                    li: a( href="../boton/openid" ) Botón
+  //h1=title
+  //h2 Utilizando la URL:
+  p
+    //input(type="button", value="ORCID", onclick="ir('#{url1}');", aria-setsize="lg")
+    //input(type="button", value="Register", onclick="ir('#{url2}');")
+    //input(type="button", value="Sign-out", onclick="ir('#{url3}');")
+  p
+    //input(type="button", value="ORCID Institutional", onclick="ir('#{url4}');")
+  script console.log("Sí #{message}"); function ir(url) {window.location = url};
+  .jumbotron
+    h1 #{title}
+    p Utilizando la URL:
+        b  #{subtitle}
+    a.btn.btn-info.row-offcanvas( href="#{subtitle}" ) Ver
+  p
+    //iframe(src="https://ailanto-dev.intecca.uned.es/index_orcid.html")
+    .row
+        .col-md-4.col-sm-6.col-xs-12
+            .panel.panel-default.panel-primary
+                .panel-heading UNED
+                    h6 (Universidad Nacional de Educación a Distancia)
+                .panel-body La Universidad Nacional de Educación a Distancia (UNED) es una universidad pública española de ámbito nacional, creada en 1972, y que se encuentra vinculada administrativamente al Ministerio de Ciencia, Innovación y Universidades
+                .panel-body
+                    a.btn.btn-success( href="#{url4}" ) UNED
+
+        .col-md-4.col-sm-6.col-xs-12
+            .panel.panel-default.panel-primary
+                .panel-heading ORCID
+                    h6 (Open Researcher and Contributor ID)
+                .panel-body ORCID es una organización sin fines de lucro que ofrece un identificador digital único y persistente para los investigadores y académicos. Con ORCID, puede crear y mantener su perfil de investigación, vincular sus publicaciones y afiliaciones, y compartir sus logros con el mundo
+                .panel-body
+                    a.btn.btn-warning( href="#{url}" ) ORCID
+  p
+    .row.jumbotron
+      .col-md-8.col-sm-12.col-xs-24.nav-justified Aceso a la aplicación de reetiquetado y reasignación de Contenidos Digitales.
+    .row
+      .col-md-4.col-sm-6.col-xs-12
+        a.btn.btn-xs.btn-default Default
+        a.btn.btn-sm.btn-primary( href="link.htm" ) Primary
+        a.btn.btn-lg.btn-success Success
+        a.btn.btn-xs.btn-info Info
+        a.btn.btn-sm.btn-warning Warning
+        a.btn.btn-lg.btn-danger Danger
+
+        ul.list-group
+            li.list-group-item.active Cras justo odio
+            li.list-group-item Dapibus ac facilisis in
+            li.list-group-item Morbi leo risus
+            li.list-group-item Dapibus ac facilisis in
+            li.list-group-item Morbi leo risus
+            li.list-group-item Dapibus ac facilisis in
+      .col-md-4.col-sm-6.col-xs-12
+        .alert.alert-dismissable.alert-warning
+            button.close( type="button", data-dismiss="alert" ) ×
+            | Warning! Warning!
+        .alert.alert-dismissable.alert-danger
+            button.close( type="button", data-dismiss="alert" ) ×
+            | Danger Will Robinson!
+        .alert.alert-dismissable.alert-success
+            button.close( type="button", data-dismiss="alert" ) ×
+            | You succeeded :-)
+        .alert.alert-dismissable.alert-info
+            button.close( type="button", data-dismiss="alert" ) ×
+            | Some information for you
+
+        .list-group
+          a.list-group-item.active( href="#" )
+              h4.list-group-item-heading List group item heading
+              p.list-group-item-text Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+          a.list-group-item( href="#" )
+              h4.list-group-item-heading List group item heading
+              p.list-group-item-text Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+          a.list-group-item( href="#" )
+              h4.list-group-item-heading List group item heading
+              p.list-group-item-text Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
+    .row-offcanvas
+        .col-md-8.col-sm-12.col-xs-24.nav-justified
+            code #{message}
