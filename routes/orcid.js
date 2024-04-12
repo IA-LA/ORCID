@@ -100,7 +100,7 @@ router.get('/boton/oauth/', function(req, res, next) {
 
     /*OAuth*/
     const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
-    res.render('orcid_boton', { theme: 'flatly', title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
+    res.render('orcid_boton', { theme: 'darkly', title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
 });
 
 router.get('/redir/', function(req, res, next) {
@@ -180,6 +180,7 @@ router.get('/redir/', function(req, res, next) {
                 console.log(response);
                 var email = JSON.parse(body);
                 res.render('orcid_boton', {
+                    theme: 'darkly',
                     title: 'ORCID OAuth 2',
                     subtitle: ' Code: ' + req.query.code + ' & Cookies: ' + util.inspect(cookies) + ' & Access_token: ' + access_token['access_token'] + ' & ORCID userinfo : ' + userinfo['sub'] + ' & ORCID emails: ' + (email['email']===undefined?'':email['email'].length > 0 ? (email['email'].length > 1 ? (email['email'].length > 2 ? email['email'][0]['email'] + " " + email['email'][1]['email'] + " " + email['email'][2]['email'] : email['email'][0]['email'] + " " + email['email'][1]['email']) : email['email'][0]['email']) : "No email"),
                     message: util.inspect(response),
@@ -205,7 +206,7 @@ router.get('/boton/openid/', function(req, res, next) {
     //const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
     const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
 
-    res.render('orcid_boton', { theme: 'superhero', title: 'ORCID OpenID', subtitle: servidor, message: 'Aprieta el botón!', url: get_openid_token });
+    res.render('orcid_boton', { theme: 'flatly', title: 'ORCID OpenID', subtitle: servidor, message: 'Aprieta el botón!', url: get_openid_token });
 });
 
 router.post('/', function(req, res, next) {
