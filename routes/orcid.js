@@ -71,14 +71,14 @@ router.get('/menu/', function(req, res, next) {
     const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
     const get_oauth_code_redir_register = get_oauth_code_register + 'http://' + ip + ":3000/orcid/redir/";
     const get_oauth_code_redir_signout = get_oauth_code_signout + 'http://' + ip + ":3000/orcid/redir/";
-    const servidor_login_redir = servidor_login + '?client_id=' + client_id + '&redirect_uri='+get_oauth_code+'http://' + ip + ":3000/orcid/redir/";
+    const servidor_login_redir = servidor_login + '?client_id=' + client_id + '&redirect_uri='+encodeURI(get_oauth_code+'http://' + ip + ":3000/orcid/redir/");
     const servidor_logout_redir = servidor_logout + '?redirect_uri=http://' + ip + ":3000/orcid/redir/";
-    const servidor_institutional_login_redir = servidor_institutional_login + '?client_id=' + client_id + '&redirect_uri='+get_oauth_code+'http://' + ip + ":3000/orcid/redir/";
+    const servidor_institutional_login_redir = servidor_institutional_login + '?client_id=' + client_id + '&redirect_uri='+encodeURI(get_oauth_code+'http://' + ip + ":3000/orcid/redir/");
     const servidor_uned_sso = "https://orcid.org/Shibboleth.sso/Login?SAMLDS=1&target=https%3A%2F%2Forcid.org%2Fshibboleth%2Fsignin&entityID=https%3A%2F%2Fwww.rediris.es%2Fsir%2Funedidp";
     //const servidor_uned_sso_redir = "https://sso.uned.es/sso/index.aspx?URL=https%3A%2F%2Fwww.intecca.uned.es%2Fgiccu%2Fapi%2Fgcono%2Fauth%2Funed";
     const servidor_uned_sso_redir1 = "https://sso.uned.es/sso/index.aspx?URL=https%3A%2F%2F127.0.0.1:3000%2Forcid%2Fredir%2F";
     const servidor_uned_sso_redir2 = "https://sso.uned.es/sso/index.aspx?URL=https://ailanto-dev.intecca.uned.es/index_cookie.html";
-    const servidor_uned_sso_redir3 = "https://sso.uned.es/sso/index.aspx?URL="+get_oauth_code+'http://' + ip + ":3000/orcid/redir/";
+    const servidor_uned_sso_redir3 = "https://sso.uned.es/sso/index.aspx?URL="+encodeURI(get_oauth_code.urlencoded+'http://' + ip + ":3000/orcid/redir/");
 
     /*OpenID*/
     /*Impkicit OAuth*/
