@@ -160,6 +160,7 @@ router.get('/menu/', function(req, res, next) {
         url0: servidor_logout, url1: servidor_institutional_login_redir, url2: servidor_uned_sso_redir1, url3: servidor_uned_sso_redir2, url4: servidor_uned_sso_redir3, url5: servidor_orcid_salm1,
         url01: get_oauth_code_redir, url02: get_oauth_code_redir_register, url03: get_oauth_code_redir_signout,
         url10: get_openid_token,
+        url230: get_oauth_code + 'http://' + ip + ":3000/orcid/boton/api/userinfo/",
         url240: get_cookie_status,
         url241: get_cookie_config,
         url242: get_cookie_userinfo,
@@ -179,11 +180,34 @@ router.get('/boton/api/userinfo', function(req, res, next) {
     if(ip.indexOf('10.201.54.') >= 0)
         ip='10.201.54.31';
 
+    // GET OAUth 1 Userinfo
+    var access_token = get_oauth_userinfo;
+    // POST OAUth 2 Access_token
+    fetch.fetchUrl(post_oauth_code_token + req.query.code, {method: "POST",
+        headers: {
+            Accept: "*/*",
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: {
+            client_id: client_id,
+            client_secret: client_secret,
+            grant_type: "authorization_code",
+            code: req.query.code,
+            redirect_uri: "http://127.0.0.1:3000/orcid/redir/"
+        }}, function(error, meta, body) {
+        //console.log(body.toString());
+        response = body.toString();
+        console.log(response);
+        if(response !== '{"error":"invalid_grant","error_description":"Invalid authorization code: undefined"}')
+            access_token = JSON.parse(body)["access_token"];
 
-    /*OAuth*/
-    //https://orcid.org/oauth/userinfo?access_token=0ce67482-4b3e-48c4-8700-464fa1c9b9d2
-    const get_oauth_userinfo_redir = get_oauth_code + get_oauth_userinfo + "?access_token=" + ;
-    res.render('orcid_boton', { theme: req.query.theme, title: 'ORCID OAuth 1 (userinfo)', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_userinfo_redir});
+        /*OAuth*/
+        //https://orcid.org/oauth/userinfo?access_token=0ce67482-4b3e-48c4-8700-464fa1c9b9d2
+        const get_oauth_userinfo_redir = get_oauth_code + get_oauth_userinfo + "?access_token=" + access_token;
+        res.render('orcid_boton', { theme: req.query.theme, title: 'ORCID OAuth 1 (userinfo)', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_userinfo_redir});
+
+    });
+
 });
 
 router.get('/boton/oauth/', function(req, res, next) {
