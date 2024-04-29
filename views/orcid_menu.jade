@@ -2,6 +2,10 @@ extends layout
 block content
   // Fuente:
   //            https://webdesign.tutsplus.com/baking-bootstrap-snippets-with-jade--cms-22798t
+  //            http://pug-bootstrap.github.io/PUG-Bootstrap/components.html
+  //    Templates:
+  //            https://bootswatch.com/3/
+  //            https://bootswatch.com/4/
   //            https://www.bootstrapcdn.com
   script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
   script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
@@ -24,11 +28,17 @@ block content
                     li: a( href="#{url}" ) Sign-in
                     li: a( href="#{url0}" ) Sign-out
                     li: a( href='#{url1}' ) Institutional
-                    li.dropdown-header Login SSO
-                    li: a( href="#{url2}" ) Institutional (UNED)
-                    li: a( href="#{url3}" ) UNED redir (Local)
-                    li: a( href="#{url4}" ) UNED redir (UNED)
-                    li: a( href="#{url5}" ) UNED redir (ORCID)
+                    li.dropdown-header Login SSO UNED
+                    li: a( href="#{url2}" ) redir (Local) Mal
+                    li: a( href="#{url3}" ) redir (ORCID) Mal
+                    li: a( href="#{url4}" ) redir (UNED) OK
+                    li.dropdown-header ORCID Saml
+                    li: a( href="#{url5}" ) Saml1 (UNED)
+                    li: a( href="#{url5}" ) Saml1 (UNED)
+                    li: a( href="#{url5}" ) Saml1 (UNED)
+                    li: a( href="#{url5}" ) Saml1 (UNED)
+                    li: a( href="#{url5}" ) Saml1 (UNED)
+                    li: a( href="#{url5}" ) Saml1 (UNED)
             li.dropdown
                 a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) OAuth
                     span.caret
@@ -40,13 +50,34 @@ block content
                     li.dropdown-header OAuth Flujo
                     li: a( href="/orcid/boton/oauth" ) 2 Pasos
             li.dropdown
-                a.dropdown-toggle( href="#{url10}", data-toggle="dropdown", role="button", aria-expanded="false" ) OpenID
+                a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) OpenID
                     span.caret
                 ul.dropdown-menu( role="menu" )
                     li.dropdown-header OpenID
                     li: a( href="#{url0}" ) ORCID OpenID
                     li.dropdown-header OpenID Flujo
                     li: a( href="/orcid/boton/openid" ) 1 Paso
+            li.dropdown
+                a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Servicios API v3.0
+                    span.caret
+                ul.dropdown-menu( role="menu" )
+                    li.dropdown-header API Pública
+                        li.dropdown-header ---- Usuario
+                    li.dropdown: a( href='https://pub.sandbox.orcid.org/' ) ORCID
+                    li.dropdown: a( href='https://pub.sandbox.orcid.org/v3.0/0009-0003-3064-7331/record' ) ORCID Registro
+                    li.dropdown: a( href='https://pub.sandbox.orcid.org/v3.0/0009-0003-3064-7331/email' ) ORCID Email
+                    li.dropdown-header API Búsqueda Solr
+                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=given-names:*sanchez*' ) ORCID nombre
+                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=email:*fjsanchez@*' ) ORCID email
+                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=' ) ORCID búsqueda
+                    li.dropdown-header API Autorizada (no miembro)
+                    li: a( href='/orcid/boton/api/userinfo' ) ORCID userinfo
+                    li.dropdown-header My_orcid cookie
+                    li: a( href='#{url240}' ) ORCID status
+                    li: a( href='#{url241}' ) ORCID config
+                    li: a( href='#{url242}' ) ORCID userinfo
+                    li: a( href='#{url243}' ) ORCID emails
+                    li: a( href='#{url244}' ) ORCID filiaciones
   //h1=title
   //h2 Utilizando la URL:
   p
@@ -70,7 +101,7 @@ block content
                     h6 (Universidad Nacional de Educación a Distancia)
                 .panel-body La Universidad Nacional de Educación a Distancia (UNED) es una universidad pública española de ámbito nacional, creada en 1972, y que se encuentra vinculada administrativamente al Ministerio de Ciencia, Innovación y Universidades
                 .panel-body
-                    a.btn.btn-success( href="#{url4}" ) UNED
+                    a.btn.btn-success( href="#{url3}" ) UNED
 
         .col-md-4.col-sm-6.col-xs-12
             .panel.panel-default.panel-primary
@@ -78,7 +109,37 @@ block content
                     h6 (Open Researcher and Contributor ID)
                 .panel-body ORCID es una organización sin fines de lucro que ofrece un identificador digital único y persistente para los investigadores y académicos. Con ORCID, puede crear y mantener su perfil de investigación, vincular sus publicaciones y afiliaciones, y compartir sus logros con el mundo
                 .panel-body
-                    a.btn.btn-warning( href="#{url}" ) ORCID
+                    a.btn.btn-warning( href="#{url01}" ) ORCID
+  p
+    .row
+        ul.list-group
+            li.list-group-item.active CASOS DE USO (Acceso)
+            li.list-group-item Usuario UNED
+            ul.list-group-item
+                li.list-group-item
+                    a.list-group-item( href="https://ailanto.intecca.uned.es/index_cookie.html" ) Autentificado
+                    p.list-group-item + ORCID (Opcional)
+                    ul.list-group-item
+                        a.list-group-item( href="https://pub.orcid.org/v3.0/search?q=email:*fjsanchez@intecca.uned.es*" ) No vinculado UNED o No público en ORCID
+                        a.list-group-item( href="https://pub.orcid.org/v3.0/search?q=email:*fjsanchez@mailinator.com*" ) Vinculado UNED
+                a.list-group-item( href="#{url3}" ) No autentificado
+            li.list-group-item Usuario ORCID (UNED o No UNED)
+            ul.list-group-item
+                a.list-group-item( href="#{url01}" ) Autentificado
+                ul.list-group-item
+                    a.list-group-item( href="#{url}" ) + No vinculado UNED o email externo (No público en ORCID o No en BBDD)
+                    a.list-group-item( href="https://pub.orcid.org/v3.0/search?q=email:*fjsanchez@mailinator.com*" ) + Vinculado UNED o email externo (o en BBDD)
+                a.list-group-item( href="#{url}" ) No autentificado
+        .list-group
+            a.list-group-item.active( href="#" )
+                h4.list-group-item-heading List group item heading
+                p.list-group-item-text Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+            a.list-group-item( href="#" )
+                h4.list-group-item-heading List group item heading
+                p.list-group-item-text Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+            a.list-group-item( href="#" )
+                h4.list-group-item-heading List group item heading
+                p.list-group-item-text Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
   p
     .row.jumbotron
       .col-md-8.col-sm-12.col-xs-24.nav-justified Aceso a la aplicación de reetiquetado y reasignación de Contenidos Digitales.
@@ -91,13 +152,6 @@ block content
         a.btn.btn-sm.btn-warning Warning
         a.btn.btn-lg.btn-danger Danger
 
-        ul.list-group
-            li.list-group-item.active Cras justo odio
-            li.list-group-item Dapibus ac facilisis in
-            li.list-group-item Morbi leo risus
-            li.list-group-item Dapibus ac facilisis in
-            li.list-group-item Morbi leo risus
-            li.list-group-item Dapibus ac facilisis in
       .col-md-4.col-sm-6.col-xs-12
         .alert.alert-dismissable.alert-warning
             button.close( type="button", data-dismiss="alert" ) ×
@@ -112,16 +166,6 @@ block content
             button.close( type="button", data-dismiss="alert" ) ×
             | Some information for you
 
-        .list-group
-          a.list-group-item.active( href="#" )
-              h4.list-group-item-heading List group item heading
-              p.list-group-item-text Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
-          a.list-group-item( href="#" )
-              h4.list-group-item-heading List group item heading
-              p.list-group-item-text Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
-          a.list-group-item( href="#" )
-              h4.list-group-item-heading List group item heading
-              p.list-group-item-text Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
     .row-offcanvas
         .col-md-8.col-sm-12.col-xs-24.nav-justified
             code #{message}
