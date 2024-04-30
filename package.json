@@ -15,6 +15,7 @@
     "http": "0.0.1-security",
     "import": "0.0.6",
     "jade": "~1.11.0",
+    "jade-bootstrap": "^1.0.14",
     "morgan": "~1.9.0",
     "natural": "^6.10.5",
     "openrefine": "0.0.3",

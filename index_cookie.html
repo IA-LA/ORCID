@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Servidor Cookie</title>
+    </head>
+    <body>
+        <h1>Servidor Cookie</h1>
+
+        <h2>Cookie</h2>
+
+        <script>
+
+            // FUENTE:
+            // http://stackoverflow.com/questions/5142337/ddg#11767598
+            function getCook(cookiename)
+            {
+                // Get name followed by anything except a semicolon
+                var cookiestring=RegExp(cookiename+"=[^;]+").exec(document.cookie);
+                // Return everything after the equal sign, or an empty string if the cookie name not found
+                return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
+            }
+
+            var usuario = getCook('usuarioUNEDv2');
+
+            // POST 1 (ID-EMAIL)
+            // FUENTE:
+            // https://stackoverflow.com/questions/48559642/xmlhttprequest-send-method-is-returning-null-when-parameters-are-sent-through#48559748
+            //const dbParam = JSON.stringify({"serviceName": "sso.SSOService","methodName": "verificarCookie", "parameters": ["ID%3aaXRjYTAwMzQ%3d%23EMAIL%3aZmpzYW5jaGV6QGludGVjY2$
+            const dbParam = JSON.stringify({"serviceName": "sso.SSOService","methodName": "verificarCookie", "parameters": [usuario]});
+            const xmlhttp = new XMLHttpRequest();
+            xmlhttp.onload = function() {
+                const myObj = JSON.parse(this.responseText);
+                let email = "Vacío";
+                for (let x in myObj) {
+                    email = myObj[x];
+                }
+                let text = "<h3>usuarioUNEDv2: </h3>" + (usuario===""?"Cookie no disponible":usuario);
+                text += "<h3>email: </h3>" + email;
+
+                // POST 2 (EMAIL-USER INFO)
+                // FUENTE:
+                // https://stackoverflow.com/questions/48559642/xmlhttprequest-send-method-is-returning-null-when-parameters-are-sent-through#48559748
+                const dbParam = JSON.stringify({"serviceName": "orc.ORCService","methodName": "getAllDatosUsuarios","parameters": [{"Email": email}]});
+                const xmlhttp = new XMLHttpRequest();
+                xmlhttp.onload = function() {
+                    const myObj = JSON.parse(this.responseText);
+                    let DNI = "00000000-O";
+                    text += "<h3>Usuario:</h3> <select>";
+                    for (let x in myObj) {
+                        text += "<option>" + x + ": " + myObj[x] + "</option>";
+                        if(x === 'Nif')
+                            DNI = myObj[x];
+                    }
+                    text += "</select>";
+
+                    // POST 3 (DNI-EMAIL)
+                    // FUENTE:
+                    // https://stackoverflow.com/questions/48559642/xmlhttprequest-send-method-is-returning-null-when-parameters-are-sent-through#48559748
+                    const dbParam = JSON.stringify({"serviceName": "orc.ORCService","methodName": "getDatosUsuariosByNif",  "parameters": [{"Nif":DNI}]});
+                    const xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onload = function() {
+                        const myObj = JSON.parse(this.responseText);
+                        text += "<h3>Nif:</h3> <select>";
+                        for (let x in myObj) {
+                            text += "<option>" + x + ": " + myObj[x] + "</option>";
+                        }
+                        text += "</select>";
+                        document.getElementById("demo").innerHTML = text;
+                    };
+                    xmlhttp.open("POST", "https://arce.intecca.uned.es/api/amfphp2/index.php?contentType=application/json", true);
+                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlhttp.send(dbParam);
+                };
+                xmlhttp.open("POST", "https://arce.intecca.uned.es/api/amfphp2/index.php?contentType=application/json", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send(dbParam);
+            };
+            xmlhttp.open("POST", "https://arce.intecca.uned.es/api/amfphp2/index.php?contentType=application/json", true);
+            //xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf8");
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            //xmlhttp.send("");
+            xmlhttp.send(dbParam);
+        </script>
+
+        <div id="demo"></div>
+
+    </body>
+</html>
