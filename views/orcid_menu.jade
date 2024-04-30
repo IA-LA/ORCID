@@ -48,7 +48,7 @@ block content
                     li: a( href='#{url02}' ) ORCID access register
                     li: a( href='#{url03}' ) ORCID access sign-out
                     li.dropdown-header OAuth Flujo
-                    li: a( href="/orcid/boton/oauth" ) 2 Pasos
+                    li: a( href="/orcid/boton/oauth?theme=#{theme}" ) 2 Pasos
             li.dropdown
                 a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) OpenID
                     span.caret
@@ -56,28 +56,32 @@ block content
                     li.dropdown-header OpenID
                     li: a( href="#{url10}" ) ORCID OpenID
                     li.dropdown-header OpenID Flujo
-                    li: a( href="/orcid/boton/openid" ) 1 Paso
+                    li: a( href="/orcid/boton/openid?theme=#{theme}" ) 1 Paso
             li.dropdown
                 a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Servicios API v3.0
                     span.caret
                 ul.dropdown-menu( role="menu" )
                     li.dropdown-header API Pública
-                        li.dropdown-header ---- Usuario
-                    li.dropdown: a( href='https://pub.sandbox.orcid.org/' ) ORCID
-                    li.dropdown: a( href='https://pub.sandbox.orcid.org/v3.0/0009-0003-3064-7331/record' ) ORCID Registro
-                    li.dropdown: a( href='https://pub.sandbox.orcid.org/v3.0/0009-0003-3064-7331/email' ) ORCID Email
+                    li: a( href='https://pub.sandbox.orcid.org/' ) ORCID
+                    li: a( href='https://pub.sandbox.orcid.org/v3.0/#{orcid}/email' ) ORCID Email
+                    li: a( href='https://pub.sandbox.orcid.org/v3.0/#{orcid}/record' ) ORCID Registro
+                    li: a( href='https://pub.sandbox.orcid.org/v3.0/#{orcid}/educations' ) ORCID Educations
+                    li: a( href='https://pub.sandbox.orcid.org/v3.0/#{orcid}/personal-details' ) ORCID Personal details
                     li.dropdown-header API Búsqueda Solr
-                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=given-names:*sanchez*' ) ORCID nombre
+                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=' ) ORCID
                     li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=email:*fjsanchez@*' ) ORCID email
-                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=' ) ORCID búsqueda
+                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=given-names:*sanchez*' ) ORCID nombre
                     li.dropdown-header API Autorizada (no miembro)
                     li: a( href='/orcid/boton/api/userinfo' ) ORCID
-                    li: a( href='#{url230}' ) ORCID userinfo
-                    li.dropdown-header My_orcid cookie
+                    li: a( href='#{url230}' ) ORCID Code
+                    li: a( href='#{url231}' ) ORCID Auth
+                    li: a( href='#{url232}' ) ORCID userinfo
+                    li.dropdown-header My_orcid cookie libres
                     li: a( href='#{url240}' ) ORCID status
                     li: a( href='#{url241}' ) ORCID config
-                    li: a( href='#{url242}' ) ORCID userinfo
+                    li.dropdown-header My_orcid cookie autorizadas
                     li: a( href='#{url243}' ) ORCID emails
+                    li: a( href='#{url242}' ) ORCID userinfo
                     li: a( href='#{url244}' ) ORCID filiaciones
   //h1=title
   //h2 Utilizando la URL:

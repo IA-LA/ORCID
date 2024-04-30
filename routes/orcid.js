@@ -53,7 +53,7 @@ const get_cookie_status= servidor + "/userStatus.json";
 const get_cookie_config = servidor + "/config.json";
 const get_cookie_userinfo = servidor + "/userInfo.json";
 const get_cookie_emails = servidor + "/account/emails.json";
-const get_cookie_filiaciones = servidor + "/affiliations/affiliationGroups.json";
+const get_cookie_affiliations = servidor + "/affiliations/affiliationGroups.json";
 
 /* API */
 const get_api3_pub = servidor_pub + "/v3.0";
@@ -69,8 +69,8 @@ const servidor_institutional_login = servidor + "/institutional-signin";
    ORCID API PUBLICA
 */
 const servidor_api = "https://pub.sandbox.orcid.org";
-const get_public = "/v3.0/0009-0000-8287-135X/";
-const get_solr = "/v3.0/search?q=given-names:*sanchez*";
+const get_public = "/v3.0";
+const get_solr = "/search?q=";
 
 router.get('/menu/', function(req, res, next) {
     /*
@@ -160,13 +160,15 @@ router.get('/menu/', function(req, res, next) {
         url0: servidor_logout, url1: servidor_institutional_login_redir, url2: servidor_uned_sso_redir1, url3: servidor_uned_sso_redir2, url4: servidor_uned_sso_redir3, url5: servidor_orcid_salm1,
         url01: get_oauth_code_redir, url02: get_oauth_code_redir_register, url03: get_oauth_code_redir_signout,
         url10: get_openid_token,
-        url230: get_oauth_code + 'http://' + ip + ":3000/orcid/boton/api/userinfo/",
+        url230: get_oauth_code + 'http://' + ip + ":3000/orcid/menu/?theme=" + req.query.theme,
+        url231: post_oauth_code_token + 'http://' + ip + ":3000/orcid/menu/?theme=" + req.query.theme,
+        url232: get_oauth_code + 'http://' + ip + ":3000/orcid/boton/api/userinfo/",
         url240: get_cookie_status,
         url241: get_cookie_config,
         url242: get_cookie_userinfo,
         url243: get_cookie_emails,
-        url244: get_cookie_filiaciones,
-        url245: get_cookie_filiaciones
+        url246: get_cookie_affiliations,
+        orcid: "0009-0003-3064-7331"
     });
 });
 
@@ -294,8 +296,7 @@ router.get('/redir/', function(req, res, next) {
             // GET OAUth 3 Email
             fetch.fetchUrl(get_api3_pub + '/' + userinfo['sub'] + '/email', {method: "GET",
                 headers: {
-                    Accept: "application/orcid+json",
-                    //Authorization: "Bearer " + access_token['access_token']
+                    Accept: "application/orcid+json"
                 }}, function(error, meta, body) {
                 //console.log(body.toString());
                 response += " " + body.toString();
@@ -328,7 +329,7 @@ router.get('/boton/openid/', function(req, res, next) {
     //const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
     const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
 
-    res.render('orcid_boton', { theme: 'flatly', title: 'ORCID OpenID', subtitle: servidor, message: 'Aprieta el botón!', url: get_openid_token });
+    res.render('orcid_boton', { theme: req.query.theme, title: 'ORCID OpenID', subtitle: servidor, message: 'Aprieta el botón!', url: get_openid_token });
 });
 
 router.get('/uned/', function(req, res, next) {
