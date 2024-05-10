@@ -1,0 +1,11 @@
+<application>
+  <component name="FileTypeManager" version="17">
+    <extensionMap>
+      <mapping pattern="mimetype" type="PLAIN_TEXT" />
+      <mapping pattern="plataformaAVIP.php" type="PLAIN_TEXT" />
+      <mapping ext="service" type="PLAIN_TEXT" />
+      <mapping ext="mht" type="XHTML" />
+      <mapping ext="opf" type="XML" />
+    </extensionMap>
+  </component>
+</application>
