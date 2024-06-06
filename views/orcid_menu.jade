@@ -29,8 +29,8 @@ block content
                     li: a( href="#{url0}" ) Sign-out
                     li: a( href='#{url1}' ) Institutional
                     li.dropdown-header Login SSO UNED
-                    li: a( href="#{url2}" ) redir (Local) Mal
-                    li: a( href="#{url3}" ) redir (ORCID) Mal
+                    li: a( href="#{url2}" ) redir (Local no va)
+                    li: a( href="#{url3}" ) redir (ORCID no va)
                     li: a( href="#{url4}" ) redir (UNED) OK
                     li.dropdown-header ORCID Saml
                     li: a( href="#{url5}" ) Saml1 (UNED)
@@ -62,15 +62,17 @@ block content
                     span.caret
                 ul.dropdown-menu( role="menu" )
                     li.dropdown-header API Pública
-                    li: a( href='https://pub.sandbox.orcid.org/' ) ORCID
-                    li: a( href='https://pub.sandbox.orcid.org/v3.0/#{orcid}/email' ) ORCID Email
-                    li: a( href='https://pub.sandbox.orcid.org/v3.0/#{orcid}/record' ) ORCID Registro
-                    li: a( href='https://pub.sandbox.orcid.org/v3.0/#{orcid}/educations' ) ORCID Educations
-                    li: a( href='https://pub.sandbox.orcid.org/v3.0/#{orcid}/personal-details' ) ORCID Personal details
+                    li: a( href='#{url20}/' ) ORCID
+                    li.dropdown-header API Pública GET
+                    li: a( href='#{url21}/#{orcid}/email' ) ORCID Email
+                    li: a( href='#{url21}/#{orcid}/record' ) ORCID Registro
+                    li: a( href='#{url21}/#{orcid}/educations' ) ORCID Educations
+                    li: a( href='#{url21}/#{orcid}/personal-details' ) ORCID Personal details
                     li.dropdown-header API Búsqueda Solr
-                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=' ) ORCID
-                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=email:*fjsanchez@*' ) ORCID email
-                    li: a( href='https://pub.sandbox.orcid.org/v3.0/search?q=given-names:*sanchez*' ) ORCID nombre
+                    li: a( href='#{url22}*' ) ORCID
+                    li.dropdown-header API Búsqueda Solr Campos
+                    li: a( href='#{url22}email:*fjsanchez@*' ) ORCID email
+                    li: a( href='#{url22}given-names:*sanchez*' ) ORCID nombre
                     li.dropdown-header API Autorizada (no miembro)
                     li: a( href='/orcid/boton/api/userinfo' ) ORCID
                     li: a( href='#{url230}' ) ORCID Code
@@ -85,13 +87,14 @@ block content
                     li: a( href='#{url244}' ) ORCID filiaciones
   //h1=title
   //h2 Utilizando la URL:
-  p
+  //p
     //input(type="button", value="ORCID", onclick="ir('#{url1}');", aria-setsize="lg")
     //input(type="button", value="Register", onclick="ir('#{url2}');")
     //input(type="button", value="Sign-out", onclick="ir('#{url3}');")
-  p
+  //p
     //input(type="button", value="ORCID Institutional", onclick="ir('#{url4}');")
-  script console.log("Sí #{message}"); function ir(url) {window.location = url};
+  script console.log("Sí #{message} Token: "+(document.location.href.split('#')[1])); function ir(url) {window.location = url};
+  script function autorizado(){if(document.location.href.split('#')[1].split('=')[0]==='error'){console.log("Sí #{message} Token: "+(document.location.href.split('#')[1].split('=')[0]));}}
   .jumbotron
     h1 #{title}
     p Utilizando la URL:
@@ -125,15 +128,15 @@ block content
                     a.list-group-item( href="https://ailanto.intecca.uned.es/index_cookie.html" ) Autentificado
                     p.list-group-item + ORCID (Opcional)
                     ul.list-group-item
-                        a.list-group-item( href="https://pub.orcid.org/v3.0/search?q=email:*fjsanchez@intecca.uned.es*" ) No vinculado UNED o No público en ORCID
-                        a.list-group-item( href="https://pub.orcid.org/v3.0/search?q=email:*fjsanchez@mailinator.com*" ) Vinculado UNED
+                        a.list-group-item( href="#{url20}#{url21}/search?q=email:*fjsanchez@intecca.uned.es*" ) No vinculado UNED o No público en ORCID
+                        a.list-group-item( href="#{url20}#{url21}/search?q=email:*fjsanchez@mailinator.com*" ) Vinculado UNED
                 a.list-group-item( href="#{url3}" ) No autentificado
             li.list-group-item Usuario ORCID (UNED o No UNED)
             ul.list-group-item
                 a.list-group-item( href="#{url01}" ) Autentificado
                 ul.list-group-item
                     a.list-group-item( href="#{url}" ) + No vinculado UNED o email externo (No público en ORCID o No en BBDD)
-                    a.list-group-item( href="https://pub.orcid.org/v3.0/search?q=email:*fjsanchez@mailinator.com*" ) + Vinculado UNED o email externo (o en BBDD)
+                    a.list-group-item( href="#{url20}#{url21}/search?q=email:*fjsanchez@mailinator.com*" ) + Vinculado UNED o email externo (o en BBDD)
                 a.list-group-item( href="#{url}" ) No autentificado
         .list-group
             a.list-group-item.active( href="#" )

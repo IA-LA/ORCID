@@ -26,23 +26,29 @@ var hostname = os.hostname();
 //const client_secret /* Código secreto del cliente */ = "124e8a7f-fdd4-4a8f-8b78-6ec7e17b75b9";
 //const servidor = "https://sandbox.orcid.org";
 //const servidor_pub = "https://pub.sandbox.orcid.org";
+//const redir = ":3000/orcid/redir/";
+//const servidor_api = "https://pub.sandbox.orcid.org";
+
 
 /* PRODUCCION */
 const client_id /* ID de cliente */ = "APP-GEKGUEO143RB1XGL";
 const client_secret /* Código secreto del cliente */ = "0985ab59-a02e-4ec2-ab41-961aa1668543";
 const servidor = "https://orcid.org";
 const servidor_pub = "https://pub.orcid.org";
+//const redir = ":3000/orcid/redir/";
+const redir = ":3000/orcid/menu/";
+const servidor_api = "https://pub.orcid.org";
 
 /* DSPLIEGUE */
 //const servidor_despliegue="https://ailanto-dev.intecca.uned.es";
 const servidor_despliegue="https://ailanto.intecca.uned.es";
-const servidor_despliegure_cookie=servidor_despliegue+"/index_cookie.html";
+const servidor_despliegue_cookie=servidor_despliegue+"/index_cookie.html";
 
 /* GET users listing. */
 /*OAuth*/
-const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&show_login=true&lang=es&state=parametroPersonalizable&redirect_uri=";
-const get_oauth_code_register = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&show_login=false&family_names=Apellidos&given_names=Nombre&email=correo%40uned.es&lang=es&state=parametroPersonalizable&redirect_uri=";
-const get_oauth_code_signout = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&prompt=login&lang=es&state=parametroPersonalizable&redirect_uri=";
+const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&show_login=true&lang=es&state=darkly&redirect_uri=";
+const get_oauth_code_register = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&show_login=false&family_names=Apellidos&given_names=Nombre&email=correo%40uned.es&lang=es&state=darkly&redirect_uri=";
+const get_oauth_code_signout = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&prompt=login&lang=es&state=darkly&redirect_uri=";
 //const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri="+servidor_despliegure;
 //const get_oauth_code = servidor + "/oauth/authorize?client_id=" + client_id + "&response_type=code&scope=/authenticate&redirect_uri="+servidor_despliegure+":9002";
 const post_oauth_code_token = servidor + "/oauth/token?client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=authorization_code&code=";
@@ -68,7 +74,6 @@ const servidor_institutional_login = servidor + "/institutional-signin";
 /*
    ORCID API PUBLICA
 */
-const servidor_api = "https://pub.sandbox.orcid.org";
 const get_public = "/v3.0";
 const get_solr = "/search?q=";
 
@@ -79,97 +84,254 @@ router.get('/menu/', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54.') >= 0)
-        ip='10.201.54.31';
+    if(ip.indexOf('10.201.54.') > 0){
+        ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
+        ip = '10.201.54.109';
+    }
+    else{
+        ip = '127.0.0.1';
+    }
 
-    /*OAuth*/
-    const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
-    const get_oauth_code_redir_register = get_oauth_code_register + 'http://' + ip + ":3000/orcid/redir/";
-    const get_oauth_code_redir_signout = get_oauth_code_signout + 'http://' + ip + ":3000/orcid/redir/";
-    //DOBLE ENCODE
-    const servidor_login_redir = servidor_login + '?client_id=' + client_id + '&redirect_uri='+get_oauth_code+encodeURIComponent('http://' + ip + ":3000/orcid/redir/");
-    const servidor_logout_redir = servidor_logout + '?redirect_uri='+encodeURIComponent('http://' + ip + ':3000/orcid/redir/');
-    const servidor_institutional_login_redir = servidor_institutional_login + '?client_id=' + client_id + '&redirect_uri='+encodeURIComponent(get_oauth_code+'http://' + ip + ":3000/orcid/redir/");
-    /*SSO*/
-    //const servidor_uned_sso_redir = "https://sso.uned.es/sso/index.aspx?URL=https%3A%2F%2Fwww.intecca.uned.es%2Fgiccu%2Fapi%2Fgcono%2Fauth%2Funed";
-    const servidor_uned_sso_redir1 = "https://sso.uned.es/sso/index.aspx?URL=https%3A%2F%2F127.0.0.1:3000%2Forcid%2Fredir%2F";
-    const servidor_uned_sso_redir2 = "https://sso.uned.es/sso/index.aspx?URL="+encodeURIComponent(get_oauth_code_redir);
-    const servidor_uned_sso_redir3 = "https://sso.uned.es/sso/index.aspx?URL="+encodeURIComponent(servidor_despliegure_cookie);
-    /*ORCID Saml*/
-    const servidor_orcid_salm1 = "https://orcid.org/Shibboleth.sso/Login?SAMLDS=1&target=https%3A%2F%2Forcid.org%2Fshibboleth%2Fsignin&entityID=https%3A%2F%2Fwww.rediris.es%2Fsir%2Funedidp";
+    /* Capturar #Ancla en la llamada a menú
+    * https://stackoverflow.com/questions/18796421/capture-anchor-links-route-with-node-express-and-passport#18799198
+    * https://stackoverflow.com/questions/12525928/how-to-get-request-path-with-express-req-object#12527220
+    *
+    * Capturar los Tokens
+    * OK    : http://127.0.0.1:3000/orcid/menu/#access_token=0cc4e53d-6513-4b33-82b8-a9872e99bb3c&token_type=bearer&expires_in=599&tokenVersion=1&persistent=true&id_token=eyJraWQiOiJwcm9kdWN0aW9uLW9yY2lkLW9yZy03aGRtZHN3YXJvc2czZ2p1am84YWd3dGF6Z2twMW9qcyIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoiMEFTY3ZvM3VIODlWd3QzM1JiUEN1ZyIsImF1ZCI6IkFQUC1HRUtHVUVPMTQzUkIxWEdMIiwic3ViIjoiMDAwOS0wMDA0LTM3NDEtODcxNSIsImF1dGhfdGltZSI6MTcxNjYzNDY4MiwiaXNzIjoiaHR0cHM6XC9cL29yY2lkLm9yZyIsImV4cCI6MTcxNjcyMTY5NSwiZ2l2ZW5fbmFtZSI6IkZyYW5jaXNjbyIsImlhdCI6MTcxNjYzNTI5NSwibm9uY2UiOiJ3aGF0ZXZlciIsImZhbWlseV9uYW1lIjoiU8OhbmNoZXoiLCJqdGkiOiJmZDg2NDQ1MS0yNGI5LTQ3ZjktYjg0MS0yMWFmYTEzOTU5MjgifQ.CFa__IBT7PZfv_CTaudMR7QkBxrllgS1g3VKY_H_0MO5Ie8hY4f4YzBiqGiYHeAzb9eRPB7nkB_bymxl7TSTKwwaIDJHIGgx9sKF_sQjdD5i-L4NaKnDmMHgvu4_cpLQhq56foyj3-ZsNxt5-yIKg1zlpdtVPs_e8rfEmAPLM5madPE5nM5iTeY-yqIlZjCLhDlRxHgNrkt_CL1h03ldtYe0Evt5zKRaaTk_cVLTHAweLBlqEzHUrLFo3D6wrFuxhWk2NQrChxaYUTTk45cLRoxu6rqQ5PAXSkT3RWnr8wo1GakkUnEmcT7P0AtCxADL9yIPbvG1WlQ8082xq3vrZQ&tokenId=447803632
+    * ERROR : http://127.0.0.1:3000/orcid/menu/#error=access_denied&error_description=User%20denied%20access
+    * */
 
-    /*MY_ORCID Cookie*/
-    // RAIZ
-    // TODO https://orcid.org/config.json ******************** LIBRE *********************************
-    // TODO https://orcid.org/userStatus.json **************** LIBRE *********************************
-    // TODO https://orcid.org/userInfo.json **********************************************************
+    /*
+    * OAuth      : ir('https://orcid.org/oauth/authorize?client_id=APP-GEKGUEO143RB1XGL&response_type=code&scope=/authenticate&show_login=true&lang=es&state=darkly&redirect_uri=http://127.0.0.1:3000/orcid/menu/');
+    * OAuth Code : http://127.0.0.1:3000/orcid/menu/?code=5G0HnI&state=darkly
+    * OAuth Token:
+    *
+    * */
+    if(req.query.state!==undefined){
+        // Unauthorized: Error
+        if(req.query.error!==undefined){
 
-    //VECTORS
-    //https://orcid.org/assets/vectors/orcid.logo.svg
-    //https://orcid.org/assets/vectors/
-    //...
+        }
+        // Authorized: Access Token
+        if(req.query.code!==undefined) {
+            // POST OAUth 2 Access_token
+            fetch.fetchUrl(post_oauth_code_token + req.query.code, {
+                method: "POST",
+                headers: {
+                    Accept: "*/*",
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                data: {
+                    client_id: client_id,
+                    client_secret: client_secret,
+                    grant_type: "authorization_code",
+                    code: req.query.code,
+                    redirect_uri: "http://127.0.0.1:3000/orcid/menu/"
+                }
+            }, function (error, meta, body) {
+                //console.log(body.toString());
+                response = body.toString();
+                console.log(response);
+                var access_token = JSON.parse(body);
 
-    //IMG
-    //https://orcid.org/assets/img/organizations.jpg
+                // GET OAUth 2 Userinfo
+                fetch.fetchUrl(get_oauth_userinfo, {
+                    method: "GET",
+                    headers: {
+                        Accept: "*/*",
+                        Authorization: "Bearer " + access_token['access_token']
+                    }
+                }, function (error, meta, body) {
+                    //console.log(body.toString());
+                    response += " " + body.toString();
+                    console.log(response);
+                    var userinfo = JSON.parse(body);
 
-    //MY-ORCID
-    //https://orcid.org/my-orcid/?orcid=
-    //https://orcid.org/my-orcid/externalIdentifiers.json
-    //...
+                    // GET OAUth 3 Email
+                    fetch.fetchUrl(get_api3_pub + '/' + userinfo['sub'] + '/email', {
+                        method: "GET",
+                        headers: {
+                            Accept: "application/orcid+json"
+                        }
+                    }, function (error, meta, body) {
+                        //console.log(body.toString());
+                        response += " " + body.toString();
+                        console.log(response);
+                        var email = JSON.parse(body);
+                        res.render('orcid_boton', {
+                            theme: 'darkly',
+                            title: 'ORCID OAuth 2',
+                            subtitle: ' Code: ' + req.query.code + ' & Access_token: ' + access_token['access_token'] + ' & ORCID userinfo : ' + userinfo['sub'] + ' & ORCID emails: ' + (email['email'] === undefined ? '' : email['email'].length > 0 ? (email['email'].length > 1 ? (email['email'].length > 2 ? email['email'][0]['email'] + " " + email['email'][1]['email'] + " " + email['email'][2]['email'] : email['email'][0]['email'] + " " + email['email'][1]['email']) : email['email'][0]['email']) : "No email"),
+                            message: util.inspect(response),
+                            url: servidor_despliegue_cookie
+                        });
+                    });
+                });
+            });
+        }
+    }
+    /*
+    * No OAuth
+     */
+    else {
+        /* ORCID LOGGEDIN */
+        //https://orcid.org/userStatus.json
 
-    // CUENTA
-    //TODO https://orcid.org/account/emails.json *****************************************************
-    //https://orcid.org/account/nameForm.json
-    //https://orcid.org/account/countryForm.json
-    //https://orcid.org/account/biographyForm.json
-    //https://orcid.org/account/preferences.json
+        // GET ORCID LoggedIn
+        fetch.fetchUrl('https://orcid.org/userStatus.json', {
+            method: "GET",
+            headers: {
+                Accept: "application/orcid+json"
+            }
+        }, function (error, meta, body) {
+            //console.log(body.toString());
+            var response = body.toString();
+            console.log(response);
+            var loggedin = JSON.parse(body);
+            console.log(loggedin['loggedIn']);
+            if (loggedin['loggedIn'] === false) {
+                console.log('FALSE LoogedIn' + req.protocol + req.hostname + req.headers.host + req.route.path + JSON.stringify(req.this));
 
-    // MENSAJES
-    //https://orcid.org/inbox/unreadCount.json
+                /*OAuth*/
+                const get_oauth_code_redir = get_oauth_code + 'http://' + ip + redir;
+                const get_oauth_code_redir_register = get_oauth_code_register + 'http://' + ip + redir;
+                const get_oauth_code_redir_signout = get_oauth_code_signout + 'http://' + ip + redir;
+                //DOBLE ENCODE
+                const servidor_login_redir = servidor_login + '?client_id=' + client_id + '&redirect_uri=' + get_oauth_code + encodeURIComponent('http://' + ip + redir);
+                const servidor_logout_redir = servidor_logout + '?redirect_uri=' + encodeURIComponent('http://' + ip + redir);
+                const servidor_institutional_login_redir = servidor_institutional_login + '?client_id=' + client_id + '&redirect_uri=' + encodeURIComponent(get_oauth_code + 'http://' + ip + redir);
+                /*SSO*/
+                //const servidor_uned_sso_redir = "https://sso.uned.es/sso/index.aspx?URL=https%3A%2F%2Fwww.intecca.uned.es%2Fgiccu%2Fapi%2Fgcono%2Fauth%2Funed";
+                const servidor_uned_sso_redir1 = "https://sso.uned.es/sso/index.aspx?URL=https%3A%2F%2F127.0.0.1:3000%2Forcid%2Fredir%2F";
+                const servidor_uned_sso_redir2 = "https://sso.uned.es/sso/index.aspx?URL=" + encodeURIComponent(get_oauth_code_redir);
+                const servidor_uned_sso_redir3 = "https://sso.uned.es/sso/index.aspx?URL=" + encodeURIComponent(servidor_despliegue_cookie);
+                /*ORCID Saml*/
+                const servidor_orcid_salm1 = "https://orcid.org/Shibboleth.sso/Login?SAMLDS=1&target=https%3A%2F%2Forcid.org%2Fshibboleth%2Fsignin&entityID=https%3A%2F%2Fwww.rediris.es%2Fsir%2Funedidp";
 
-    //AFFILIATIONS
-    //https://orcid.org/affiliations/affiliationGroups.json
 
-    // DELEGATORS
-    //https://orcid.org/delegators/delegators-and-me.json
+                /*MY_ORCID Cookie*/
+                // RAIZ
+                // TODO https://orcid.org/config.json ******************** LIBRE *********************************
+                // TODO https://orcid.org/userStatus.json **************** LIBRE *********************************
+                // TODO https://orcid.org/userInfo.json **********************************************************
 
-    //WORKS
-    //https://orcid.org/works/worksExtendedPage.json?offset=0&sort=date&sortAsc=false&pageSize=50
-    //https://orcid.org/works/groupingSuggestions.json
+                //VECTORS
+                //https://orcid.org/assets/vectors/orcid.logo.svg
+                //https://orcid.org/assets/vectors/
+                //...
 
-    //RESEARCH-RESOURCES
-    //https://orcid.org/research-resources/researchResourcePage.json?offset=0&sort=date&sortAsc=false&pageSize=50
+                //IMG
+                //https://orcid.org/assets/img/organizations.jpg
 
-    //FUNDINGS
-    //https://orcid.org/fundings/fundingGroups.json?&sort=date&sortAsc=false
+                //MY-ORCID
+                //https://orcid.org/my-orcid/?orcid=
+                //https://orcid.org/my-orcid/externalIdentifiers.json
+                //...
 
-    //PEER-REVIEWS
-    //https://orcid.org/peer-reviews/peer-reviews-minimized.json?sortAsc=false
+                // CUENTA
+                //TODO https://orcid.org/account/emails.json *****************************************************
+                //https://orcid.org/account/nameForm.json
+                //https://orcid.org/account/countryForm.json
+                //https://orcid.org/account/biographyForm.json
+                //https://orcid.org/account/preferences.json
 
-    /*OpenID*/
-    /*Impkicit OAuth*/
-    //const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
-    const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2Fmenu%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
-    const get_openid_token_userinfo = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2Fmenu%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
+                // MENSAJES
+                //https://orcid.org/inbox/unreadCount.json
 
-    res.render('orcid_menu', { theme: (req.query.theme===undefined ? 'flatly' : req.query.theme),
-        title: 'ORCID Menú',
-        subtitle: servidor,
-        message: 'Aprieta un botón!',
-        url: servidor_login_redir,
-        url0: servidor_logout, url1: servidor_institutional_login_redir, url2: servidor_uned_sso_redir1, url3: servidor_uned_sso_redir2, url4: servidor_uned_sso_redir3, url5: servidor_orcid_salm1,
-        url01: get_oauth_code_redir, url02: get_oauth_code_redir_register, url03: get_oauth_code_redir_signout,
-        url10: get_openid_token,
-        url230: get_oauth_code + 'http://' + ip + ":3000/orcid/menu/?theme=" + req.query.theme,
-        url231: post_oauth_code_token + 'http://' + ip + ":3000/orcid/menu/?theme=" + req.query.theme,
-        url232: get_oauth_code + 'http://' + ip + ":3000/orcid/boton/api/userinfo/",
-        url240: get_cookie_status,
-        url241: get_cookie_config,
-        url242: get_cookie_userinfo,
-        url243: get_cookie_emails,
-        url246: get_cookie_affiliations,
-        orcid: "0009-0003-3064-7331"
-    });
+                //AFFILIATIONS
+                //https://orcid.org/affiliations/affiliationGroups.json
+
+                // DELEGATORS
+                //https://orcid.org/delegators/delegators-and-me.json
+
+                //WORKS
+                //https://orcid.org/works/worksExtendedPage.json?offset=0&sort=date&sortAsc=false&pageSize=50
+                //https://orcid.org/works/groupingSuggestions.json
+
+                //RESEARCH-RESOURCES
+                //https://orcid.org/research-resources/researchResourcePage.json?offset=0&sort=date&sortAsc=false&pageSize=50
+
+                //FUNDINGS
+                //https://orcid.org/fundings/fundingGroups.json?&sort=date&sortAsc=false
+
+                //PEER-REVIEWS
+                //https://orcid.org/peer-reviews/peer-reviews-minimized.json?sortAsc=false
+
+                /*OpenID*/
+                /*Impkicit OAuth*/
+                //const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
+                const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2Fmenu%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
+                const get_openid_token_userinfo = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2Fmenu%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
+
+                res.render('orcid_menu', {
+                    theme: (req.query.theme === undefined ? (req.query.state === undefined ? 'flatly' : req.query.state) : req.query.theme),
+                    title: 'ORCID Menú',
+                    subtitle: servidor,
+                    message: 'Aprieta un botón!',
+                    url: servidor_login_redir,
+                    url0: servidor_logout,
+                    url1: servidor_institutional_login_redir,
+                    url2: servidor_uned_sso_redir1,
+                    url3: servidor_uned_sso_redir2,
+                    url4: servidor_uned_sso_redir3,
+                    url5: servidor_orcid_salm1,
+                    url01: get_oauth_code_redir,
+                    url02: get_oauth_code_redir_register,
+                    url03: get_oauth_code_redir_signout,
+                    url10: get_openid_token,
+                    url20: servidor_api,
+                    url21: servidor_api + get_public,
+                    url22: servidor_api + get_public + get_solr,
+                    url230: get_oauth_code + 'http://' + ip + ":3000/orcid/menu/?theme=" + req.query.theme,
+                    url231: post_oauth_code_token + 'http://' + ip + ":3000/orcid/menu/?theme=" + req.query.theme,
+                    url232: get_oauth_code + 'http://' + ip + ":3000/orcid/boton/api/userinfo/",
+                    url240: get_cookie_status,
+                    url241: get_cookie_config,
+                    url242: get_cookie_userinfo,
+                    url243: get_cookie_emails,
+                    url246: get_cookie_affiliations,
+                    orcid: "0009-0003-3064-7331" //Cogerlo de la llamada de autorización
+                });
+            }
+            else {
+                console.log('TRUE LoggedIn');
+
+                /*OAuth*/
+                const get_oauth_code_redir = get_oauth_code + 'http://' + ip + redir;
+                const get_oauth_code_redir_register = get_oauth_code_register + 'http://' + ip + redir;
+                const get_oauth_code_redir_signout = get_oauth_code_signout + 'http://' + ip + redir;
+                //DOBLE ENCODE
+                const servidor_login_redir = servidor_login + '?client_id=' + client_id + '&redirect_uri=' + get_oauth_code + encodeURIComponent('http://' + ip + redir);
+                const servidor_logout_redir = servidor_logout + '?redirect_uri=' + encodeURIComponent('http://' + ip + redir);
+                const servidor_institutional_login_redir = servidor_institutional_login + '?client_id=' + client_id + '&redirect_uri=' + encodeURIComponent(get_oauth_code + 'http://' + ip + redir);
+                /*SSO*/
+                //const servidor_uned_sso_redir = "https://sso.uned.es/sso/index.aspx?URL=https%3A%2F%2Fwww.intecca.uned.es%2Fgiccu%2Fapi%2Fgcono%2Fauth%2Funed";
+                const servidor_uned_sso_redir1 = "https://sso.uned.es/sso/index.aspx?URL=https%3A%2F%2F127.0.0.1:3000%2Forcid%2Fredir%2F";
+                const servidor_uned_sso_redir2 = "https://sso.uned.es/sso/index.aspx?URL=" + encodeURIComponent(get_oauth_code_redir);
+                const servidor_uned_sso_redir3 = "https://sso.uned.es/sso/index.aspx?URL=" + encodeURIComponent(servidor_despliegure_cookie);
+                /*ORCID Saml*/
+                const servidor_orcid_salm1 = "https://orcid.org/Shibboleth.sso/Login?SAMLDS=1&target=https%3A%2F%2Forcid.org%2Fshibboleth%2Fsignin&entityID=https%3A%2F%2Fwww.rediris.es%2Fsir%2Funedidp";
+
+                /* ORCID eMAILS */
+                //https://orcid.org/account/emails.json
+                // GET OAUth 3 Email
+                fetch.fetchUrl('https://orcid.org/account/emails.json', {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/orcid+json"
+                    }
+                }, function (error, meta, body) {
+                    console.log(body.toString());
+                    var response = body.toString();
+                    //console.log(response);
+                    var loggedin = JSON.parse(body);
+                    console.log(loggedin);
+                });
+
+
+            }
+        });
+    }
 });
 
 router.get('/boton/api/userinfo', function(req, res, next) {
@@ -179,8 +341,13 @@ router.get('/boton/api/userinfo', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54.') >= 0)
-        ip='10.201.54.31';
+    if(ip.indexOf('10.201.54.') > 0){
+        ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
+        ip = '10.201.54.109';
+    }
+    else{
+        ip = '127.0.0.1';
+    }
 
     // GET OAUth 1 Userinfo
     var access_token = get_oauth_userinfo;
@@ -195,7 +362,7 @@ router.get('/boton/api/userinfo', function(req, res, next) {
             client_secret: client_secret,
             grant_type: "authorization_code",
             code: req.query.code,
-            redirect_uri: "http://127.0.0.1:3000/orcid/redir/"
+            redirect_uri: "http://127.0.0.1" + redir
         }}, function(error, meta, body) {
         //console.log(body.toString());
         response = body.toString();
@@ -219,11 +386,16 @@ router.get('/boton/oauth/', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54.') >= 0)
-        ip='10.201.54.31';
+    if(ip.indexOf('10.201.54.') > 0){
+        ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
+        ip = '10.201.54.109';
+    }
+    else{
+        ip = '127.0.0.1';
+    }
 
     /*OAuth*/
-    const get_oauth_code_redir = get_oauth_code + 'http://' + ip + ":3000/orcid/redir/";
+    const get_oauth_code_redir = get_oauth_code + 'http://' + ip + redir;
     res.render('orcid_boton', { theme: req.query.theme, title: 'ORCID OAuth 1', subtitle: servidor, message: 'Aprieta el botón!', url: get_oauth_code_redir});
 });
 
@@ -321,13 +493,18 @@ router.get('/boton/openid/', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54.') >= 0)
-        ip = '10.201.54.31';
+    if(ip.indexOf('10.201.54.') > 0){
+        ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
+        ip = '10.201.54.109';
+    }
+    else{
+        ip = '127.0.0.1';
+    }
 
     /*OpenID*/
     /*Impkicit OAuth*/
     //const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F127.0.0.1:3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
-    const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
+    const get_openid_token = servidor + "/oauth/authorize?response_type=token&redirect_uri=http:%2F%2F" + ip + ":3000%2Forcid%2Fmenu%2F&client_id=" + client_id + "&scope=openid&nonce=whatever";
 
     res.render('orcid_boton', { theme: req.query.theme, title: 'ORCID OpenID', subtitle: servidor, message: 'Aprieta el botón!', url: get_openid_token });
 });
