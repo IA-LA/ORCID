@@ -28,6 +28,9 @@ block content
                     li: a( href="#{url}" ) Sign-in
                     li: a( href="#{url0}" ) Sign-out
                     li: a( href='#{url1}' ) Institutional
+                    li.dropdown-header Widget Login ORCID
+                    li: a( href="https://orcid.github.io/orcid-auth-widget/widget.html" ) Sign-in
+                    li: a( href="https://github.com/ORCID/orcid-auth-widget" ) Código GitHub
                     li.dropdown-header Login SSO UNED
                     li: a( href="#{url2}" ) redir (Local no va)
                     li: a( href="#{url3}" ) redir (ORCID no va)
@@ -62,7 +65,9 @@ block content
                     span.caret
                 ul.dropdown-menu( role="menu" )
                     li.dropdown-header API Pública
-                    li: a( href='#{url20}/' ) ORCID
+                    li: a( href='#{url20}/' ) ORCID Public
+                    li: a( href="https://info.orcid.org/documentation/features/public-api/" ) Info
+                    li: a( href="https://github.com/ORCID/ORCID-Source/tree/main/orcid-api-web" ) Código GitHub
                     li.dropdown-header API Pública GET
                     li: a( href='#{url21}/#{orcid}/email' ) ORCID Email
                     li: a( href='#{url21}/#{orcid}/record' ) ORCID Registro
@@ -72,16 +77,20 @@ block content
                     li: a( href='#{url22}*' ) ORCID
                     li.dropdown-header API Búsqueda Solr Campos
                     li: a( href='#{url22}email:*fjsanchez@*' ) ORCID email
-                    li: a( href='#{url22}given-names:*sanchez*' ) ORCID nombre
-                    li.dropdown-header API Autorizada (no miembro)
+                    li: a( href='#{url22}given-names:*sanchez*' ) ORCID nombre y/o apellidos
+                    li.dropdown-header API No miembro Autorizada (OAuth)
                     li: a( href='/orcid/boton/api/userinfo' ) ORCID
                     li: a( href='#{url230}' ) ORCID Code
                     li: a( href='#{url231}' ) ORCID Auth
                     li: a( href='#{url232}' ) ORCID userinfo
-                    li.dropdown-header My_orcid cookie libres
+                    li.dropdown-header API Miembro Autorizada (OAuth)
+                    li: a( href='https://api.orcid.org/' ) ORCID Member
+                    li: a( href="https://info.orcid.org/documentation/features/member-api/" ) Info
+                    li: a( href="https://github.com/ORCID/ORCID-Source/tree/main/orcid-api-web" ) Código GitHub
+                    li.dropdown-header My_orcid Cookie
                     li: a( href='#{url240}' ) ORCID status
                     li: a( href='#{url241}' ) ORCID config
-                    li.dropdown-header My_orcid cookie autorizadas
+                    li.dropdown-header My_orcid Cookie Autorizada (OAuth)
                     li: a( href='#{url243}' ) ORCID emails
                     li: a( href='#{url242}' ) ORCID userinfo
                     li: a( href='#{url244}' ) ORCID filiaciones
