@@ -84,7 +84,7 @@ router.get('/menu/', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = res.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54.') > 0){
+    if(ip !== '127.0.0.1'){
         ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
         ip = '10.201.54.109';
     }
