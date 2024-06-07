@@ -88,9 +88,6 @@ router.get('/menu/', function(req, res, next) {
         ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
         ip = '10.201.54.109';
     }
-    else{
-        ip = '127.0.0.1';
-    }
 
     /* Capturar #Ancla en la llamada a menú
     * https://stackoverflow.com/questions/18796421/capture-anchor-links-route-with-node-express-and-passport#18799198
@@ -104,7 +101,7 @@ router.get('/menu/', function(req, res, next) {
     /*
     * OAuth      : ir('https://orcid.org/oauth/authorize?client_id=APP-GEKGUEO143RB1XGL&response_type=code&scope=/authenticate&show_login=true&lang=es&state=darkly&redirect_uri=http://127.0.0.1:3000/orcid/menu/');
     * OAuth Code : http://127.0.0.1:3000/orcid/menu/?code=5G0HnI&state=darkly
-    * OAuth Token:
+    * OAuth Token: https://orcid.org/oauth/authorize?client_id=APP-GEKGUEO143RB1XGL&response_type=code&scope=/authenticate&show_login=true&lang=es&state=darkly&redirect_uri=http://127.0.0.1:3000/orcid/menu/
     *
     * */
     if(req.query.state!==undefined){
@@ -126,7 +123,7 @@ router.get('/menu/', function(req, res, next) {
                     client_secret: client_secret,
                     grant_type: "authorization_code",
                     code: req.query.code,
-                    redirect_uri: "http://127.0.0.1:3000/orcid/menu/"
+                    redirect_uri: ip + redir
                 }
             }, function (error, meta, body) {
                 //console.log(body.toString());
@@ -282,8 +279,8 @@ router.get('/menu/', function(req, res, next) {
                     url20: servidor_api,
                     url21: servidor_api + get_public,
                     url22: servidor_api + get_public + get_solr,
-                    url230: get_oauth_code + 'http://' + ip + ":3000/orcid/menu/?theme=" + req.query.theme,
-                    url231: post_oauth_code_token + 'http://' + ip + ":3000/orcid/menu/?theme=" + req.query.theme,
+                    url230: get_oauth_code + 'http://' + ip + redir + "?theme=" + req.query.theme,
+                    url231: post_oauth_code_token + 'http://' + ip + redir + "?theme=" + req.query.theme,
                     url232: get_oauth_code + 'http://' + ip + ":3000/orcid/boton/api/userinfo/",
                     url240: get_cookie_status,
                     url241: get_cookie_config,
