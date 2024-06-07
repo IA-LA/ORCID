@@ -83,6 +83,7 @@ router.get('/menu/', function(req, res, next) {
     * http://stackoverflow.com/questions/20553554/ddg#20554225
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
+    var ip = req.socket.remoteAddress.split(':')[3];
     var ip = res.socket.remoteAddress.split(':')[3];
     if(ip !== '127.0.0.1'){
         ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
@@ -338,12 +339,10 @@ router.get('/boton/api/userinfo', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54.') > 0){
+    var ip = res.socket.remoteAddress.split(':')[3];
+    if(ip !== '127.0.0.1') {
         ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
         ip = '10.201.54.109';
-    }
-    else{
-        ip = '127.0.0.1';
     }
 
     // GET OAUth 1 Userinfo
@@ -383,12 +382,10 @@ router.get('/boton/oauth/', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54.') > 0){
+    var ip = res.socket.remoteAddress.split(':')[3];
+    if(ip !== '127.0.0.1') {
         ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
         ip = '10.201.54.109';
-    }
-    else{
-        ip = '127.0.0.1';
     }
 
     /*OAuth*/
@@ -490,12 +487,10 @@ router.get('/boton/openid/', function(req, res, next) {
     * https://www.abstractapi.com/guides/node-js-get-ip-address
     */
     var ip = req.socket.remoteAddress.split(':')[3];
-    if(ip.indexOf('10.201.54.') > 0){
+    var ip = res.socket.remoteAddress.split(':')[3];
+    if(ip !== '127.0.0.1') {
         ip = '10.201.54.31'; //IP fija dentro del rango del DHCP
         ip = '10.201.54.109';
-    }
-    else{
-        ip = '127.0.0.1';
     }
 
     /*OpenID*/
